@@ -23,9 +23,9 @@ export default function TaskModal({ taskId, onClose }) {
   const [startTime, setStartTime] = useState(sch?.startTime || '')
   const [endTime, setEndTime] = useState(sch?.endTime || '')
 
-  const [hasDeadline, setHasDeadline] = useState(!!dl)
-  const [deadlineDate, setDeadlineDate] = useState(dl?.date || '')
-  const [deadlineTime, setDeadlineTime] = useState(dl?.time || '')
+  const [hasDeadline, setHasDeadline] = useState(editing ? !!dl : true)
+  const [deadlineDate, setDeadlineDate] = useState(dl?.date || todayStr())
+  const [deadlineTime, setDeadlineTime] = useState(dl?.time || '23:59')
 
   function toggleDay(i) {
     setDays((prev) => (prev.includes(i) ? prev.filter((d) => d !== i) : [...prev, i]))
