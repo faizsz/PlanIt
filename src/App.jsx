@@ -5,6 +5,7 @@ import TodayView from './components/TodayView'
 import CalendarModal from './components/CalendarModal'
 import TasksView from './components/TasksView'
 import TaskModal from './components/TaskModal'
+import DataMenu from './components/DataMenu'
 import { ThemeToggle } from './components/ui/theme-toggle'
 
 export default function App() {
@@ -51,6 +52,7 @@ export default function App() {
             <CalendarIcon className="w-5 h-5" strokeWidth={1.8} />
             Kalender
           </button>
+          <DataMenu />
           <ThemeToggle />
         </div>
       </header>

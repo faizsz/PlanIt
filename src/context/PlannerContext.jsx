@@ -58,6 +58,58 @@ export function PlannerProvider({ children }) {
     })
   }
 
+  // Export all planner data to a downloadable JSON file
+  function exportData() {
+    const payload = {
+      app: 'PlanIt',
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      tasks,
+      categories,
+      completions,
+    }
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `planit-backup-${new Date().toISOString().slice(0, 10)}.json`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+  }
+
+  // Import planner data from a parsed JSON object. Returns { ok, message }.
+  function importData(parsed, { merge = false } = {}) {
+    if (!parsed || typeof parsed !== 'object' || !Array.isArray(parsed.tasks)) {
+      return { ok: false, message: 'File tidak valid atau bukan backup PlanIt.' }
+    }
+
+    const incomingTasks = parsed.tasks || []
+    const incomingCategories = Array.isArray(parsed.categories) ? parsed.categories : []
+    const incomingCompletions = parsed.completions && typeof parsed.completions === 'object' ? parsed.completions : {}
+
+    if (merge) {
+      // Merge: keep existing, add new ones (by id) without duplicating
+      setTasks((prev) => {
+        const ids = new Set(prev.map((t) => t.id))
+        return [...prev, ...incomingTasks.filter((t) => !ids.has(t.id))]
+      })
+      setCategories((prev) => {
+        const ids = new Set(prev.map((c) => c.id))
+        return [...prev, ...incomingCategories.filter((c) => !ids.has(c.id))]
+      })
+      setCompletions((prev) => ({ ...prev, ...incomingCompletions }))
+    } else {
+      // Replace everything
+      setTasks(incomingTasks)
+      setCategories(incomingCategories.length ? incomingCategories : DEFAULT_CATEGORIES)
+      setCompletions(incomingCompletions)
+    }
+
+    return { ok: true, message: `${incomingTasks.length} tugas berhasil dimuat.` }
+  }
+
   const value = {
     tasks,
     categories,
@@ -67,6 +119,8 @@ export function PlannerProvider({ children }) {
     addCategory,
     saveTask,
     deleteTask,
+    exportData,
+    importData,
   }
 
   return <PlannerContext.Provider value={value}>{children}</PlannerContext.Provider>
