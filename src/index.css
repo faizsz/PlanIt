@@ -1,0 +1,128 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #F0F6FF;
+  --color-surface: #FFFFFF;
+  --color-ink: #1A2B4A;
+  --color-ink-soft: #6B7FA3;
+  --color-line: #D4E3F5;
+  --color-teal: #2563EB;
+  --color-teal-light: #E0ECFF;
+  --color-amber: #D97706;
+  --color-amber-light: #FEF3C7;
+  --color-rust: #DC2626;
+  --color-rust-light: #FEE2E2;
+
+  --font-display: "Space Grotesk", sans-serif;
+  --font-sans: "Inter", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
+/* Light theme (default) */
+:root {
+  --color-bg: #F0F6FF;
+  --color-surface: #FFFFFF;
+  --color-ink: #1A2B4A;
+  --color-ink-soft: #6B7FA3;
+  --color-line: #D4E3F5;
+  --color-teal: #2563EB;
+  --color-teal-light: #E0ECFF;
+  --color-amber: #D97706;
+  --color-amber-light: #FEF3C7;
+  --color-rust: #DC2626;
+  --color-rust-light: #FEE2E2;
+}
+
+/* Dark theme (class-based) */
+:root.dark {
+  --color-bg: #000000;
+  --color-surface: #0A0A0A;
+  --color-ink: #F2F2F2;
+  --color-ink-soft: #8A8A8A;
+  --color-line: #222222;
+  --color-teal: #3B82F6;
+  --color-teal-light: #11203B;
+  --color-amber: #F59E0B;
+  --color-amber-light: #2A1D06;
+  --color-rust: #EF4444;
+  --color-rust-light: #2A0E0E;
+}
+
+/* Circular Reveal Animation using View Transitions API */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 9999;
+  animation: reveal-in 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes reveal-in {
+  from {
+    clip-path: circle(0px at var(--reveal-x, 50%) var(--reveal-y, 50%));
+  }
+  to {
+    clip-path: circle(var(--reveal-radius, 150vmax) at var(--reveal-x, 50%) var(--reveal-y, 50%));
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slidedown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-bg);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+.checkbox-mark {
+  position: relative;
+}
+
+.checkbox-mark.checked::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 6px;
+  height: 11px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
