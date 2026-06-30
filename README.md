@@ -1,4 +1,4 @@
-# Rencanaku
+# PlanIt 📅
 
 Aplikasi rencana harian, kalender, dan daftar deadline pribadi. Dibangun dengan React + Vite + Tailwind CSS, data tersimpan di `localStorage` browser (tanpa login, tanpa server).
 
